@@ -1,0 +1,31 @@
+{
+  "name": "prez",
+  "private": true,
+  "version": "0.0.1",
+  "description": "easily create personalized web presentations",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hertogp/webprez.git"
+  },
+  "keywords": [
+    "web presentation personalized slidy reveal.js"
+  ],
+  "author": "hertogp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hertogp/webprez/issues"
+  },
+  "homepage": "https://github.com/hertogp/webprez",
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "*",
+    "gulp-concat": "*",
+    "gulp-imagemin": "*",
+    "gulp-sass": "*",
+    "gulp-uglify": "*"
+  }
+}
