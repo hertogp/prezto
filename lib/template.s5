@@ -92,6 +92,7 @@ $endfor$
 <script src="lib/bespoke-overview.js"></script>
 <script src="lib/bespoke-keys.js"></script>
 <script src="lib/bespoke-touch.js"></script>
+<script src="lib/bespoke-scale.js"></script>
 
 <!-- create the deck -->
 <script>
@@ -100,7 +101,8 @@ $endfor$
         [bespoke.plugins.classes(),
             bespoke.plugins.keys(),
             bespoke.plugins.touch(),
-            bespoke.plugins.overview()
+            bespoke.plugins.overview(),
+            bespoke.plugins.scale()
         ]);
 </script>
 
