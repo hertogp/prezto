@@ -1,5 +1,0 @@
----
-bespoke-url: bespoke
-css: bespoke/build.css
-include-after: <script src="bespoke/build.js"></script>
-...

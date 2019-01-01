@@ -6,19 +6,16 @@
 usage() {
     echo "Usage:"
     echo
-    echo "  make-prez.sh path/to/input.md>"
+    echo "  to-prez.sh path/to/input.md>"
     echo
 }
 
 # Directories used
 OUT=dist                        # where all output goes
 LIB=lib                         # presentation framework used
+FMT=s5                          # pandoc's html/slide writer
 
-# Pandoc format whose template we'll use
-FMT=s5                          # revealjs or slidy
-
-# Pandoc extensions
-EXT=""
+EXT=""                          # pandoc extensions to use:
 EXT=${EXT}+fenced_divs          # ::: <class>\n..\n::: => <div class="x">
 EXT=${EXT}+pipe_tables          # easy tables
 EXT=${EXT}+escaped_line_breaks  # for linebreaks in table cells
@@ -35,6 +32,7 @@ else
     exit 1;
 fi
 
+# build --resource-path to include lib and md's source directory
 RES=".:..:$(pwd):$(pwd)/${LIB}:$(dirname $(pwd)/${infile})"
 echo "RES $RES"
 
@@ -58,10 +56,10 @@ echo "Generating $outfile"
 # Note: --template needs ./path/to/template-file, pandoc won't find
 #         it via ${RES} resource path (not used for template files?)
 
-pandoc -s -t ${FMT}${EXT} \
-    --template=./lib/template.$FMT \
-    --resource-path $RES \
-    $OPT \
-    $infile -o $outfile
+cmd="pandoc -s -t ${FMT}${EXT} --template=./lib/template.$FMT --resource-path $RES $OPT $infile -o $outfile"
+
+echo "cmd: $cmd"
+
+$cmd
 
 echo "Done!"

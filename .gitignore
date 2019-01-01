@@ -12,6 +12,7 @@ pids
 *.pid.lock
 
 # prez - ignore directories
+inspire.js
 dist
 tmp
 
