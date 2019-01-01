@@ -37,6 +37,9 @@ $endif$
 
 <link href="lib/inspire.js/inspire.css" rel="stylesheet" />
 <link href="lib/inspire.js/theme.css" rel="stylesheet" />
+<link href="lib/inspire.js/plugins/overview/plugin.css"></script>
+<link href="lib/inspire.js/plugins/presenter/plugin.css"></script>
+<link href="lib/inspire.js/plugins/slide-style/plugin.css"></script>
 <!-- <link href="talk.css" rel="stylesheet" /> -->
 $for(css)$
   <link rel="stylesheet" href="$css$" />
@@ -45,6 +48,11 @@ $endfor$
 $if(math)$
   $math$
 $endif$
+
+<!--
+  bliss required by inspire, preloading enables `self-contained`
+-->
+<script src="lib/bliss.shy.min.js"></script>
 
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -88,5 +96,18 @@ $include-after$
 $endfor$
 
 <script src="lib/inspire.js/inspire.js"></script>
+<!-- 
+    how to pre-load the plugins to enable self-containedi ????
+-->
+<script src="lib/inspire.js/plugins/overview/plugin.js"></script>
+<script src="lib/inspire.js/plugins/presenter/plugin.js"></script>
+<script src="lib/inspire.js/plugins/slide-style/plugin.js"></script>
+    <script>
+        console.log("plugins:", Inspire.plugins)
+        for(let k in Inspire.pluginTest) {
+            console.log('plugin', k);
+            Inspire.plugins[k]=Promise.resolve(1);
+        }
+    </script>
 </body>
 </html>

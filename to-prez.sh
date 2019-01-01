@@ -23,6 +23,7 @@ EXT=${EXT}+lists_without_preceding_blankline  # doesn't work?
 
 # So no network connectivity is required when viewing
 OPT="--self-contained"
+OPT="${OPT} --section-divs"
 
 # check input argument
 if [ "$#" -eq 1 ]; then

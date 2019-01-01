@@ -43,4 +43,34 @@ pandoc -s -t html5 --template=lib/inspire.html5 \
        prez/file.md -o dist/file.html
 ```
 
+## Code highlight 2
+<style data-slide>
+  @keyframes slidein {
+    from {
+      margin-left: 100%;
+      width: 300%; 
+    }
+
+    to {
+      margin-left: 0%;
+      width: 100%;
+    }
+  }
+  @keyframes example {
+    from {background-color: red;}
+    to {background-color: yellow;}
+  }
+  .slide {
+    background-color: yellow;
+    animation-name: slidein, example;
+    animation-duration: 2s;
+  }
+</style>
+
+```python
+
+if True:
+    print(False)
+```
+
 
