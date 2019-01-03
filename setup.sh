@@ -5,89 +5,75 @@
 # Setup/update 1 or more lib/<framework>
 
 # howto add another repo as submodule:
-#
-# 1- add REPONAME="url" to '- git repo urls' below
-# 2- add reponame to $REPOLIB list below
+# -> add repo's url to REPO_URL assoc array
 
 # howto re-add a submodule after deleting it, using setup.sh
-#
-# 1- ./setup.sh <framework>
-#
-# - repoExists checks to see if we're tracking <framework> as a submodule
-#   and if so, will checkout the previously committed version of the repo.
-
+# -- if you get an error after `setup.sh <repo>` about locally present:
+# 1. remove relevant dir under .git/modules
+# 2. remove relevant lines from .gitmodules
+# 3. remove relevant lines from .git/config
+# -> ./setup.sh <framework>
 
 # globs
-declare -A REPO_URLS
-REPO_URLS[reveal]="https://github.com/hakimel/reveal.js.git"
-REPO_URLS[impress]="https://github.com/impress/impress.js.git"
-REPO_URLS[inspire]="https://github.com/LeaVerou/inspire.js.git"
+declare -A REPO_URL
+REPO_URL[reveal]="https://github.com/hakimel/reveal.js.git"
+REPO_URL[impress]="https://github.com/impress/impress.js.git"
+REPO_URL[inspire]="https://github.com/LeaVerou/inspire.js.git"
+# - add new urls here as needed
 
-# REVEAL="https://github.com/hakimel/reveal.js.git"     # repo url
-# IMPRESS="https://github.com/impress/impress.js.git"   # repo url
-# INSPIRE="https://github.com/LeaVerou/inspire.js.git"  # repo url
-
-REPOLIB="reveal impress inspire"                      # supported frameworks
-REPODIR=lib                                           # where the frameworks go
+REPO_DIR=lib  # where the frameworks go
 
 # helpers
-usage() {
-    echo "Usage:"
-    echo
-    echo "  setup.sh [<framework> <framework> ...]"
-    echo
-    echo "  where <framework> is 1 or more of:"
-    for REPO in ${!REPO_URLS[*]}
-    do
-        echo "   - ${REPO}  (${REPO_URLS[$REPO]})"
-    done
-}
-
-# repoUrl() {
-#     # return URL for repo ($1)
-#     case ${1} in
-#         reveal) echo ${REVEAL};;
-#         impress) echo ${IMPRESS};;
-#         inspire) echo ${INSPIRE};;
-#         *) echo "";;
-#     esac
-# }
 
 repoExists() {
     # True if REPO is presently being tracked, False otherwise
-    if git ls-files --error-unmatch ${REPODIR}/${1} 2>/dev/null 1>&2
+    if git ls-files --error-unmatch ${REPO_DIR}/${1} 2>/dev/null 1>&2
     then
-        return 0;
+        return 0
     else
         return 1
     fi
 }
 
 repoAdd() {
-    # add a new public repo as submodule to this repo
-    REPO=${1};
-    # URL=$(repoUrl ${REPO})
-    URL=${REPO_URLS[$REPO]}
-    CMD1="git submodule add ${URL} ${REPODIR}/${REPO}"
+    # $1 is REPO-name used in REPO_URL
+    MOD=${REPO_DIR}/${1}
+    URL=${REPO_URL[${1}]}
+    CMD="git submodule add ${URL} ${MOD}"
     echo "repoAdd:"
-    echo "> $CMD1"
-    $CMD1
-    # if repo's .gitmodules is non-zero: add its sub-submodules as well
-    if [ -s "$REPODIR/$REPO/.gitmodules" ]
+    echo "> $CMD"
+    $CMD
+    # add any submodules if REPO's .gitmodules is non-zero
+    if [ -s "${REPO_DIR}/${REPO}/.gitmodules" ]
     then
-        CMD2="git submodule update --init --recursive ${REPODIR}/${REPO}"
-        echo "> $CMD2"
-        $CMD2
+        CMD="git submodule update --init --recursive ${MOD}"
+        echo "> $CMD"
+        $CMD
     fi
 }
 
 repoUpdate() {
     # Update an existing submodule (repo)
-    REPO=$1
-    CMD="git submodule update --remote --recursive ${REPODIR}/${REPO}"
+    MOD=${REPO_DIR}/${1}
+    CMD="git submodule update --remote --recursive ${MOD}"
     echo "repoUpdate:"
     echo "> $CMD"
     $CMD
+}
+
+usage() {
+    echo "Usage:"
+    echo
+    echo "  setup.sh [<framework> <framework> ...]"
+    echo
+    echo "  to add/update a known <framework>:"
+    echo
+    for REPO in ${!REPO_URL[*]}
+    do
+        STATUS=$(repoExists ${REPO} && echo "" || echo "NOT ")
+        echo "     - ${REPO} :${REPO_URL[$REPO]} - ${STATUS}tracked"
+    done
+    echo
 }
 
 # -- MAIN --
@@ -99,12 +85,12 @@ if [ $# -eq 0 ]; then
 else
     REPOS=""
     for REPO in $@; do
-        if [[ -v REPO_URLS[$REPO] ]]
+        if [[ -v REPO_URL[$REPO] ]]
         then
-            echo "ACCEPT: $REPO -> ${REPO_URLS[$REPO]}"
+            echo "ACCEPT: $REPO -> ${REPO_URL[$REPO]}"
             REPOS="${REPOS} $REPO"
         else
-            echo "REJECT: $REPO <- not one of: ${!REPO_URLS[*]}"
+            echo "REJECT: $REPO <- not one of: ${!REPO_URL[*]}"
         fi
     done
 fi
@@ -121,7 +107,6 @@ for REPO in ${REPOS}; do
 
 done
 
-echo "You might want to check git status & commit as needed."
-echo "-- Done."
+echo "Done."
 
 exit 0
