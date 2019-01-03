@@ -11,15 +11,19 @@ usage() {
 }
 
 # globs
+
 OUT=dist                          # where all output goes
 LIB=lib                           # html framework presentations live here
-TPL=src/pandoc                    # pandoc's templates live here
-FMT=reveal                        # default format to use
+TPL=src/pandoc                    # modified pandoc's templates live here
 
-declare -A WRITER
-WRITER[reveal]=revealjs           # has its own pandoc writer!
-WRITER[impress]=html5             # use generic writer w/ custom template
-WRITER[inspire]=html5             # use generic writer w/ custom template
+declare -A WRITER                 # map framework-name -> pandoc writer
+WRITER[impress]=html5             # - generic html writer
+WRITER[inspire]=html5             # - generic html writer
+WRITER[reveal]=revealjs           # - specific html writer
+WRITER[slidy]=slidy               # - specific html writer
+WRITER[slideous]=slideous         # - specific html writer
+WRITER[dzslides]=dzslides         # - specific html writer
+WRITER[s5]=s5                     # - specific html writer
 
 EXT=""                            # pandoc extensions to use:
 EXT="${EXT}+fenced_divs"          # ::: <class>\n..\n::: => <div class="x">
@@ -50,18 +54,16 @@ if [ ! -s ${SRC} ]; then
     exit 1
 fi
 
-if [ ! -d ${LIB}/${FMT} ]; then
+if [[ -v ${WRITER[${FMT}]} ]]; then
     echo "Unknown framework $FMT"
     usage
     exit 1
 fi
 
-# build --resource-path to include lib and md's source directory
+# build --resource-path to include lib and SRC's directory
 RES="$(pwd)"                              # current directory
-RES="${RES}:$(pwd)/${LIB}/${FMT}"         # lib /framework directory
+RES="${RES}:$(pwd)/${LIB}/${FMT}"         # framework's directory
 RES="${RES}:$(dirname $(pwd)/${SRC})"     # src-file's directory
-
-echo "RES $RES"
 
 DST="${OUT}/$(basename ${SRC/.md/-${FMT}.html})"  # include FMT in name
 
@@ -73,12 +75,19 @@ fi
 
 echo "Generating $DST"
 
-# Note: --template needs ./path/to/template-file, pandoc won't find
-#         it via its resource path (not used for template files?)
+# Note:
+# - Pandoc doesn't use the --resource-path to locate a writer-template
+#   file.  Use the --template option to provide a specific path/to/template.
 
-cmd="pandoc -s -t ${WRITER[${FMT}]}${EXT} --template=./${TPL}/$FMT.tpl --resource-path $RES $OPT $SRC -o $DST"
+CMD="pandoc -s"
+CMD="${CMD} -t ${WRITER[${FMT}]}"            # map framework to writer
+CMD="${CMD}${EXT}"                           # add some extenstions
+CMD="${CMD} --template=./${TPL}/${FMT}.tpl"  # specific path to template
+CMD="${CMD} --resource-path=${RES}"          # for finding img, css, js etc..
+CMD="${CMD} ${OPT}"                          # add some options
+CMD="${CMD} ${SRC} -o ${DST}"                # in & out!
 
-echo "> $cmd"
-$cmd
+echo "> ${CMD}"
+${CMD}
 
 echo "Done!"
