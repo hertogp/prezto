@@ -40,7 +40,7 @@ repoUrl() {
 repoExists() {
     # True REPO ($1) exists, False otherwise
 
-    if [ -d "${REPODIR}/${1}/.git" ]; then
+    if [ -d "${REPODIR}/${1}" ]; then
         return 0;
     else
         return 1
@@ -84,6 +84,7 @@ repoUpdate() {
     CMD="git submodule update --remote --recursive ${REPODIR}/$REPO"
 
     echo "repoUpdate: $CMD"
+    $CMD
 }
 
 # -- MAIN --
