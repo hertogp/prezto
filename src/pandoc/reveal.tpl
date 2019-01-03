@@ -16,7 +16,7 @@ $endif$
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="$revealjs-url$/css/reveal.css">
+  <link rel="stylesheet" href="lib/reveal/css/reveal.css">
   <style type="text/css">
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
@@ -32,9 +32,9 @@ $highlighting-css$
   </style>
 $endif$
 $if(theme)$
-  <link rel="stylesheet" href="$revealjs-url$/css/theme/$theme$.css" id="theme">
+  <link rel="stylesheet" href="lib/reveal/css/theme/$theme$.css" id="theme">
 $else$
-  <link rel="stylesheet" href="$revealjs-url$/css/theme/black.css" id="theme">
+  <link rel="stylesheet" href="lib/reveal/css/theme/black.css" id="theme">
 $endif$
 $for(css)$
   <link rel="stylesheet" href="$css$"/>
@@ -44,7 +44,7 @@ $endfor$
     var link = document.createElement( 'link' );
     link.rel = 'stylesheet';
     link.type = 'text/css';
-    link.href = window.location.search.match( /print-pdf/gi ) ? '$revealjs-url$/css/print/pdf.css' : '$revealjs-url$/css/print/paper.css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'lib/reveal/css/print/pdf.css' : 'lib/reveal/css/print/paper.css';
     document.getElementsByTagName( 'head' )[0].appendChild( link );
   </script>
   <!--[if lt IE 9]>
@@ -88,8 +88,8 @@ $body$
     </div>
   </div>
 
-  <script src="$revealjs-url$/lib/js/head.min.js"></script>
-  <script src="$revealjs-url$/js/reveal.js"></script>
+  <script src="lib/reveal/lib/js/head.min.js"></script>
+  <script src="lib/reveal/js/reveal.js"></script>
 
   <script>
 
@@ -260,16 +260,16 @@ $endif$
 
         // Optional reveal.js plugins
         dependencies: [
-          { src: '$revealjs-url$/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-          { src: '$revealjs-url$/plugin/zoom-js/zoom.js', async: true },
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'lib/reveal/plugin/zoom-js/zoom.js', async: true },
 $if(notes-server)$
-          { src: '$revealjs-url$/socket.io/socket.io.js', async: true },
-          { src: '$revealjs-url$/plugin/notes-server/client.js', async: true },
+          { src: 'lib/reveal/socket.io/socket.io.js', async: true },
+          { src: 'lib/reveal/plugin/notes-server/client.js', async: true },
 $endif$
 $if(mathjax)$
-          { src: '$revealjs-url$/plugin/math/math.js', async: true },
+          { src: 'lib/reveal/plugin/math/math.js', async: true },
 $endif$
-          { src: '$revealjs-url$/plugin/notes/notes.js', async: true }
+          { src: 'lib/reveal/plugin/notes/notes.js', async: true }
         ]
       });
     </script>

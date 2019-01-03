@@ -1,43 +1,69 @@
 #!/bin/bash
 
-# Simple script to run pandoc conversion consistently
-# - run it from its own directory: ./make-prez.sh src/file.md
+# Simple script to run pandoc conversions consistently
+# - run it from its own directory
 
 usage() {
     echo "Usage:"
     echo
-    echo "  to-prez.sh path/to/input.md>"
+    echo "  prezto.sh [<framework>] path/to/input.md>"
     echo
 }
 
-# Directories used
-OUT=dist                        # where all output goes
-LIB=lib                         # presentation framework used
-FMT=s5                          # pandoc's html/slide writer
+# globs
+OUT=dist                          # where all output goes
+LIB=lib                           # html framework presentations live here
+TPL=src/pandoc                    # pandoc's templates live here
+FMT=reveal                        # default format to use
 
-EXT=""                          # pandoc extensions to use:
-EXT=${EXT}+fenced_divs          # ::: <class>\n..\n::: => <div class="x">
-EXT=${EXT}+pipe_tables          # easy tables
-EXT=${EXT}+escaped_line_breaks  # for linebreaks in table cells
-EXT=${EXT}+lists_without_preceding_blankline  # doesn't work?
+declare -A WRITER
+WRITER[reveal]=revealjs           # has its own pandoc writer!
+WRITER[impress]=html5             # use generic writer w/ custom template
+WRITER[inspire]=html5             # use generic writer w/ custom template
 
-# So no network connectivity is required when viewing
-OPT="--self-contained"
-OPT="${OPT} --section-divs"
+EXT=""                            # pandoc extensions to use:
+EXT="${EXT}+fenced_divs"          # ::: <class>\n..\n::: => <div class="x">
+EXT="${EXT}+pipe_tables"          # easy tables
+EXT="${EXT}+escaped_line_breaks"  # for linebreaks in table cells
+EXT="${EXT}+lists_without_preceding_blankline"  # doesn't work?
 
-# check input argument
-if [ "$#" -eq 1 ]; then
-    infile=$1;
+OPT=""                            # pandoc options for conversion
+OPT="${OPT} --self-contained"     # so offline viewing is possible
+OPT="${OPT} --section-divs"       # needed for impress
+
+# MAIN
+# - interpret input arguments
+if [ $# -eq 1 ]; then
+    FMT=reveal
+    SRC=$1;
+
+elif [ $# -eq 2 ]; then
+    FMT=$1
+    SRC=$2
 else
-    usage;
+    usage
     exit 1;
 fi
 
+if [ ! -s ${SRC} ]; then
+    echo "${SRC} not found or empty!  Nothing to do.."
+    exit 1
+fi
+
+if [ ! -d ${LIB}/${FMT} ]; then
+    echo "Unknown framework $FMT"
+    usage
+    exit 1
+fi
+
 # build --resource-path to include lib and md's source directory
-RES=".:..:$(pwd):$(pwd)/${LIB}:$(dirname $(pwd)/${infile})"
+RES="$(pwd)"                              # current directory
+RES="${RES}:$(pwd)/${LIB}/${FMT}"         # lib /framework directory
+RES="${RES}:$(dirname $(pwd)/${SRC})"     # src-file's directory
+
 echo "RES $RES"
 
-outfile="${OUT}/$(basename ${infile/.md/.html})"
+DST="${OUT}/$(basename ${SRC/.md/-${FMT}.html})"  # include FMT in name
 
 # ensure outp directory is there
 if [ ! -d ${OUT} ]; then
@@ -45,22 +71,14 @@ if [ ! -d ${OUT} ]; then
     mkdir -p ${OUT}
 fi
 
-# ensure OUT-dir has local symlink to ../lib
-# - maybe some OUT/file.html is not self-contained
-if [ ! -d ${OUT}/${LIB} ]; then
-    echo "Linking ${OUT}/${LIB}"
-    ln -s ../${LIB} ${OUT}/${LIB}
-fi
-
-echo "Generating $outfile"
+echo "Generating $DST"
 
 # Note: --template needs ./path/to/template-file, pandoc won't find
-#         it via ${RES} resource path (not used for template files?)
+#         it via its resource path (not used for template files?)
 
-cmd="pandoc -s -t ${FMT}${EXT} --template=./lib/template.$FMT --resource-path $RES $OPT $infile -o $outfile"
+cmd="pandoc -s -t ${WRITER[${FMT}]}${EXT} --template=./${TPL}/$FMT.tpl --resource-path $RES $OPT $SRC -o $DST"
 
-echo "cmd: $cmd"
-
+echo "> $cmd"
 $cmd
 
 echo "Done!"
