@@ -11,9 +11,8 @@ IMPRESS="https://github.com/impress/impress.js.git"  # includes submodules
 INSPIRE="https://github.com/LeaVerou/inspire.js.git"
 
 # - local dirs used
-LIBS="reveal impress inspire"      # supported frameworks
-LIBS="reveal" # tmp for testing setup.sh (later we'll test with impress)
-LIBDIR=lib
+REPOLIB="reveal impress inspire"      # supported frameworks
+REPODIR=lib
 
 # HELPERS
 usage() {
@@ -27,58 +26,93 @@ usage() {
     echo "  - inspire"
 }
 
-repo() {
+repoUrl() {
     # return URL for repo
+
+    case $1 in
+        reveal) echo $REVEAL;;
+        impress) echo $IMPRESS;;
+        inspire) echo $INSPIRE;;
+        *) echo "";;
+    esac
 }
 
-isLocalRepo() {
-    # check if $1 repo is present ($1 = reveal impress etc..)
-    echo "Testing for ${1}"
-    if [ -d "${LIBDIR}/${1}/.git" ]; then
+repoExists() {
+    # True REPO ($1) exists, False otherwise
+
+    if [ -d "${REPODIR}/${1}/.git" ]; then
         return 0;
     else
         return 1
     fi
 }
 
-gitAdd() {
+repoOpts() {
+    # Return options for git submodule command
+
+    case $1 in
+        impress) echo "--recursive";;
+        *) echo "";;
+    esac
+}
+
+repoAdd() {
     # add public repo as submodule to this repo
 
-    LIB=$1;
-    OPT=${2:-"opt"};
-    URL=${3:-"url"};
+    REPO=$1;
+    OPTS=$(repoOpts $REPO)
+    URL=$(repoUrl $1)
+    CMD1="git submodule add $URL $REPODIR/$REPO"
+    CMD2="git submodule update --init --recursive $REPODIR/$REPO"
+    echo "repoAdd:"
+    echo "- $CMD1"
 
-    echo "git submodule add ${OPT} ${URL} ${LIBDIR}/${LIB}"
+    if [ -z "$REPODIR/$REPO/.gitmodules" ]
+    then
+        echo "git submodule update --init --recursive $REPODIR/$REPO"
+    fi
 }
 
-
-gitUpdate() {
+repoUpdate() {
     # Update rather than clone a repo
     # $1 = framework name from $LIBS
-    echo "git pull ${LIBDIR}/${1}"
 
+    REPO=$1
+    OPTS=$(repoOpts $REPO)
+    CMD="git submodule update --remote --recursive ${REPODIR}/$REPO"
+
+    echo "repoUpdate: $CMD"
 }
 
+# -- MAIN --
+
+# - sanitize cli args (must be valid REPO names)
 if [ $# -eq 0 ]; then
     echo "Hmm, nothing specified"
-    LIBS="reveal"
+    REPOS="impress"
+else
+    REPOS=""
+    for REPO in $@; do
+        if [ -z "$(repoUrl $REPO)" ]
+        then
+            echo "rejecting $REPO: -> must be 1 of [${REPOLIB}]"
+        else
+            echo "accepting $REPO"
+            REPOS="${REPOS} $REPO"
+        fi
+    done
 fi
 
-for LIB in ${LIBS}; do
+# - handle all requested REPO's
+for REPO in ${REPOS}; do
 
-    if isLocalRepo $LIB
+    if repoExists $REPO
     then
-        echo "${REPO} exists!"
+        repoUpdate $REPO
     else
-        echo "${REPO} not seen!"
+        repoAdd $REPO
     fi
 
 done
 
 exit 0
-
-
-
-
-
-
