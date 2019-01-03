@@ -18,9 +18,15 @@
 
 
 # globs
-REVEAL="https://github.com/hakimel/reveal.js.git"     # repo url
-IMPRESS="https://github.com/impress/impress.js.git"   # repo url
-INSPIRE="https://github.com/LeaVerou/inspire.js.git"  # repo url
+declare -A REPO_URLS
+REPO_URLS[reveal]="https://github.com/hakimel/reveal.js.git"
+REPO_URLS[impress]="https://github.com/impress/impress.js.git"
+REPO_URLS[inspire]="https://github.com/LeaVerou/inspire.js.git"
+
+# REVEAL="https://github.com/hakimel/reveal.js.git"     # repo url
+# IMPRESS="https://github.com/impress/impress.js.git"   # repo url
+# INSPIRE="https://github.com/LeaVerou/inspire.js.git"  # repo url
+
 REPOLIB="reveal impress inspire"                      # supported frameworks
 REPODIR=lib                                           # where the frameworks go
 
@@ -31,20 +37,21 @@ usage() {
     echo "  setup.sh [<framework> <framework> ...]"
     echo
     echo "  where <framework> is 1 or more of:"
-    echo "  - reveal"
-    echo "  - impress"
-    echo "  - inspire"
+    for REPO in ${!REPO_URLS[*]}
+    do
+        echo "   - ${REPO}  (${REPO_URLS[$REPO]})"
+    done
 }
 
-repoUrl() {
-    # return URL for repo ($1)
-    case ${1} in
-        reveal) echo ${REVEAL};;
-        impress) echo ${IMPRESS};;
-        inspire) echo ${INSPIRE};;
-        *) echo "";;
-    esac
-}
+# repoUrl() {
+#     # return URL for repo ($1)
+#     case ${1} in
+#         reveal) echo ${REVEAL};;
+#         impress) echo ${IMPRESS};;
+#         inspire) echo ${INSPIRE};;
+#         *) echo "";;
+#     esac
+# }
 
 repoExists() {
     # True if REPO is presently being tracked, False otherwise
@@ -59,7 +66,8 @@ repoExists() {
 repoAdd() {
     # add a new public repo as submodule to this repo
     REPO=${1};
-    URL=$(repoUrl ${REPO})
+    # URL=$(repoUrl ${REPO})
+    URL=${REPO_URLS[$REPO]}
     CMD1="git submodule add ${URL} ${REPODIR}/${REPO}"
     echo "repoAdd:"
     echo "> $CMD1"
@@ -86,17 +94,17 @@ repoUpdate() {
 
 # - sanitize cli args (must be valid REPO names)
 if [ $# -eq 0 ]; then
-    echo "Hmm, nothing specified"
-    REPOS="impress"
+    usage
+    exit 1
 else
     REPOS=""
     for REPO in $@; do
-        if [ -z "$(repoUrl $REPO)" ]
+        if [[ -v REPO_URLS[$REPO] ]]
         then
-            echo "rejecting $REPO: -> not 1 of ${REPOLIB}"
-        else
-            echo "accepting $REPO"
+            echo "ACCEPT: $REPO -> ${REPO_URLS[$REPO]}"
             REPOS="${REPOS} $REPO"
+        else
+            echo "REJECT: $REPO <- not one of: ${!REPO_URLS[*]}"
         fi
     done
 fi
@@ -113,5 +121,7 @@ for REPO in ${REPOS}; do
 
 done
 
-echo "Done."
+echo "You might want to check git status & commit as needed."
+echo "-- Done."
+
 exit 0
