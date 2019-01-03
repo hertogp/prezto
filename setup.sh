@@ -66,10 +66,12 @@ repoAdd() {
     CMD2="git submodule update --init --recursive $REPODIR/$REPO"
     echo "repoAdd:"
     echo "- $CMD1"
+    $CMD1
 
-    if [ -z "$REPODIR/$REPO/.gitmodules" ]
+    if [ -s "$REPODIR/$REPO/.gitmodules" ]
     then
-        echo "git submodule update --init --recursive $REPODIR/$REPO"
+        echo "- $CMD2"
+        $CMD2
     fi
 }
 
