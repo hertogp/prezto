@@ -76,7 +76,6 @@ repoAdd() {
 repoUpdate() {
     # Update an existing submodule (repo)
     REPO=$1
-    OPTS=$(repoOpts ${REPO})
     CMD="git submodule update --remote --recursive ${REPODIR}/${REPO}"
     echo "repoUpdate:"
     echo "> $CMD"
