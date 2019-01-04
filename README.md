@@ -1,8 +1,3 @@
----
-title: presentations in markdown
-author: hertogp
-...
-
 ## WIP WIP!
 
 Easily create a presentation using:
