@@ -44,7 +44,10 @@ prj-root
       `- reveal      - reveal.js as a submodule
       `- impress     - impress.js as a submodule
       `- inspire     - inspire.js as a submodule
+      `- pandoc      - local pandoc templates
+      `- prezto      - local prezto css, js, pix extras (like themes)
   package.json       - npm (dev) modules used for compilation
+  package-lock.json  - ,,
   setup.sh           - add/update a lib/<module>
   prezto.sh          - convert a md to html-presentation (self-contained)
 ```
