@@ -1,4 +1,5 @@
 const {src, dest} = require('gulp');
+const gulp = require('gulp')
 const imagemin = require('gulp-imagemin');
 const uglify = require('gulp-uglify');
 const sass = require('gulp-sass');
@@ -43,25 +44,25 @@ const autoprefix = require('gulp-autoprefixer');
 
 // Compile SASS
 
-// gulp.task('sass', function(){
-//     gulp.src('prez/sass/revealjs/*.sass')
-//         .pipe(sass().on('error', sass.logError))
-//         .pipe(autoprefix({
-//             browsers: ['last 2 versions'],
-//             cascade: true
-//         }))
-//         .pipe(gulp.dest('dist/css'));
+gulp.task('sass', async function(){
+    gulp.src('src/css/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefix({
+            browsers: ['last 2 versions'],
+            cascade: true
+        }))
+        .pipe(gulp.dest('lib/prezto/css'));
 
-// });
+});
 
 function taskSass() {
-  return src('prez/sass/revealjs/*.scss')
+  return src('src/css/*.scss')
           .pipe(sass().on('error', sass.logError))
           .pipe(autoprefix({
             browsers: ['last 2 versions'],
             cascade: true
            }))
-        .pipe(dest('dist/css/revealjs'));
+        .pipe(dest('lib/prezto/css'));
 }
 
 
@@ -92,4 +93,4 @@ function defaultTask(cb) {
 // });
 
 exports.default = defaultTask
-exports.sass = taskSass
+exports.sassy = taskSass
