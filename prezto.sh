@@ -6,15 +6,22 @@
 usage() {
     echo "Usage:"
     echo
-    echo "  prezto.sh [<framework>] path/to/input.md>"
+    echo "  prezto.sh [<framework>] path_to/input.md>"
     echo
+    echo "   yields -> path_to/dist/input-framework.html"
+    echo
+    echo "   <framework> is one of:"
+    for f in "${WRITER[@]}"; do
+        echo "    - ${f}"
+    done
 }
 
 # globs
 
-OUT=dist                          # where all output goes
-LIB=lib                           # html framework presentations live here
-TPL=src/pandoc                    # modified pandoc's templates live here
+TOP=$(dirname ~/dev/prezto/dummy) # root dir of project (change as needed)
+LIB=${TOP}/lib                    # html framework presentations live here
+TPL=${TOP}/lib/pandoc             # modified pandoc's templates live here
+OUT=dist                          # where all output goes, relative to `pwd`
 
 declare -A WRITER                 # map framework-name -> pandoc writer
 WRITER[impress]=html5             # - generic html writer
@@ -38,32 +45,33 @@ OPT="${OPT} --section-divs"       # needed for impress
 # MAIN
 # - interpret input arguments
 if [ $# -eq 1 ]; then
-    FMT=reveal
-    SRC=$1;
+    FMT=reveal  # default to reveal.js as a framework
+    SRC=$1;     # relative path to src-file
 
 elif [ $# -eq 2 ]; then
-    FMT=$1
-    SRC=$2
+    FMT=$1      # pickup framework requested
+    SRC=$2      # relative path to src-file
 else
     usage
     exit 1;
 fi
 
 if [ ! -s ${SRC} ]; then
-    echo "${SRC} not found or empty!  Nothing to do.."
+    echo "Error: ${SRC} not found or empty!  Nothing to do.."
     exit 1
 fi
 
 if [[ -v ${WRITER[${FMT}]} ]]; then
-    echo "Unknown framework $FMT"
+    echo "Error: unknown framework $FMT"
     usage
     exit 1
 fi
 
-# build --resource-path to include lib and SRC's directory
-RES="$(pwd)"                              # current directory
-RES="${RES}:$(pwd)/${LIB}/${FMT}"         # framework's directory
-RES="${RES}:$(dirname $(pwd)/${SRC})"     # src-file's directory
+RES="$(pwd)"                              # pandoc's --resource-path
+RES="${RES}:$(dirname $(pwd)/${SRC})"     # add src-file's directory
+RES="${RES}:${TOP}"                       # add repo's top-dir
+RES="${RES}:${LIB}"                       # add repo's lib-dir
+RES="${RES}:${LIB}/${FMT}"                # add repo's framework-directory
 
 DST="${OUT}/$(basename ${SRC/.md/-${FMT}.html})"  # include FMT in name
 
@@ -82,7 +90,7 @@ echo "Generating $DST"
 CMD="pandoc -s"
 CMD="${CMD} -t ${WRITER[${FMT}]}"            # map framework to writer
 CMD="${CMD}${EXT}"                           # add some extenstions
-CMD="${CMD} --template=./${TPL}/${FMT}.tpl"  # specific path to template
+CMD="${CMD} --template=${TPL}/${FMT}.tpl"    # specific path to template
 CMD="${CMD} --resource-path=${RES}"          # for finding img, css, js etc..
 CMD="${CMD} ${OPT}"                          # add some options
 CMD="${CMD} ${SRC} -o ${DST}"                # in & out!
