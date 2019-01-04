@@ -12,6 +12,7 @@ pids
 *.pid.lock
 
 # -- ignore directories
+lib/prezto
 dist/
 tmp/
 
