@@ -73,12 +73,13 @@ RES="${RES}:${TOP}"                       # add repo's top-dir
 RES="${RES}:${LIB}"                       # add repo's lib-dir
 RES="${RES}:${LIB}/${FMT}"                # add repo's framework-directory
 
-DST="${OUT}/$(basename ${SRC/.md/-${FMT}.html})"  # include FMT in name
+DST="$(pwd)/${OUT}/$(dirname ${SRC})"             # target directory
+DST="${DST}/$(basename ${SRC/.md/-${FMT}.html})"  # add dst filename
 
 # ensure outp directory is there
-if [ ! -d ${OUT} ]; then
-    echo "Creating ${OUT}"
-    mkdir -p ${OUT}
+if [ ! -d "$(dirname ${DST})" ]; then
+    echo "Creating directory $(dirname ${DST})"
+    mkdir -p $(dirname ${DST})
 fi
 
 echo "Generating $DST"
