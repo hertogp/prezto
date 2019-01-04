@@ -1,6 +1,7 @@
 ---
-author: a.u.thor
+author: a. u. thor
 title: demo
+theme: solarized
 ...
 
 # Create a presentation

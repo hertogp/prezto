@@ -1,4 +1,4 @@
-const {src, dest} = require('gulp');
+const {src, dest, parallel} = require('gulp');
 const gulp = require('gulp')
 const imagemin = require('gulp-imagemin');
 const uglify = require('gulp-uglify');
@@ -7,6 +7,7 @@ const concat = require('gulp-concat');
 const autoprefix = require('gulp-autoprefixer');
 
 /* TOP LEVEL FUNCTIONS
+ * (warning: this is old)
  * - gulp.task  - define tasks
  * - gulp.src   - point to files to use
  * - gulp.dest  - point to folder to output
@@ -23,6 +24,11 @@ const autoprefix = require('gulp-autoprefixer');
 //         .pipe(gulp.dest('dist'));
 // });
 
+function html() {
+  console.log('not implemented');
+  return true
+}
+
 
 // copy pdf
 
@@ -33,36 +39,20 @@ const autoprefix = require('gulp-autoprefixer');
 // });
 
 
-// optimize images
 
-// gulp.task('imageMin', () => {
-//     gulp.src(['prez/pix/*.jpeg', 'prez/pix/*.png'])
-//       .pipe(imagemin())
-//       .pipe(gulp.dest('dst/pix'));
-// });
+function img() {
+  // optimize images
+  return src(['src/pix/*.jpeg', 'src/pix/*.png'])
+    .pipe(imagemin())
+    .pipe(dest('lib/prezto/pix'));
+}
 
-
-// Compile SASS
-
-gulp.task('sass', async function(){
-    gulp.src('src/css/*.scss')
-        .pipe(sass().on('error', sass.logError))
-        .pipe(autoprefix({
-            browsers: ['last 2 versions'],
-            cascade: true
-        }))
-        .pipe(gulp.dest('lib/prezto/css'));
-
-});
-
-function taskSass() {
-  return src('src/css/*.scss')
-          .pipe(sass().on('error', sass.logError))
-          .pipe(autoprefix({
-            browsers: ['last 2 versions'],
-            cascade: true
-           }))
-        .pipe(dest('lib/prezto/css'));
+function css() {
+  // Compile SASS (.scss)
+  return src(['src/css/*.scss'])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(autoprefix({browsers: ['last 2 versions'], cascade: true}))
+    .pipe(dest('lib/prezto/css'));
 }
 
 
@@ -75,10 +65,18 @@ function taskSass() {
 //     .pipe(gulp.dest('dist/js'))
 // });
 
+function minjs() {
+  return src(['src/js/*.js'])
+    .pipe(concat('prezto.js'))
+    .pipe(dest('lib/prezto/js'));
+}
+
 
 // default Task(s)
 
-function defaultTask(cb) {
+function generic(cb) {
+  console.log('\n  to see available tasks, run:\n');
+  console.log('    gulp --tasks\n');
   cb();
 }
 
@@ -92,5 +90,9 @@ function defaultTask(cb) {
 //     gulp.watch('prez/sass/*.scss', ['sass']);
 // });
 
-exports.default = defaultTask
-exports.sassy = taskSass
+exports.help = generic
+exports.default = parallel(img, css, minjs)
+exports.css = css
+exports.img = img
+exports.minjs = minjs
+exports.html = html
