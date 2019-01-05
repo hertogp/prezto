@@ -1,6 +1,7 @@
 ---
 author: a.u.thor
 title: demo
+css: src/css/reveal-theme0.css
 ...
 
 # Create a presentation
@@ -37,20 +38,20 @@ View with `xdg-open dist/demo-<format>.html` in your default browser.
 
 ```bash
 ├── dist
-│   └── <presentaion>-<format>.html
+│   └── <presentation>-<format>.html
 ├── lib
 │   ├── impress
 │   ├── inspire
-│   └── reveal
+│   ├── reveal
+│   └── prezto
 ├── slides
 │   ├── <presentation>.md
 │   └── img
-├── src
-│   ├── js
-│   ├── pandoc
-│   ├── pix
-│   └── scss
-└── tmp
+└── src
+    ├── js
+    ├── pandoc
+    ├── pix
+    └── scss
 ```
 
 ## Slide creation

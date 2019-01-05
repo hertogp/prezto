@@ -17,29 +17,6 @@ const autoprefix = require('gulp-autoprefixer');
  * */
 
 
-// copy all HTML files
-
-// gulp.task('copyHtml', function(){
-//     gulp.src('src/*.html')
-//         .pipe(gulp.dest('dist'));
-// });
-
-function html() {
-  console.log('not implemented');
-  return true
-}
-
-
-// copy pdf
-
-// gulp.task('copyPdf', function() {
-//     gulp.src('src/pdf/*')
-//         .pipe(gulp.dest('dist/pdf'));
-
-// });
-
-
-
 function img() {
   // optimize images
   return src(['src/pix/*.jpeg', 'src/pix/*.png'])
@@ -95,4 +72,3 @@ exports.default = parallel(img, css, minjs)
 exports.css = css
 exports.img = img
 exports.minjs = minjs
-exports.html = html
