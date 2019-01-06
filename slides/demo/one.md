@@ -17,7 +17,7 @@ will create: `dist/demo-format.html`.
 View with `xdg-open dist/demo-<format>.html` in your default browser.
 
 
-## available formats (WIP!)
+## available formats (WIP!) {data-transition="fade"}
 
 - reveal <- `setup.sh reveal`
 - impress <- `setup.sh impress`
