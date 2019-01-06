@@ -1,7 +1,9 @@
 ---
 author: a.u.thor
 title: demo
-css: src/css/reveal-theme0.css
+css:
+    - src/css/reveal-theme0.css
+    - lib/reveal/css/print/paper.css
 ...
 
 # Create a presentation

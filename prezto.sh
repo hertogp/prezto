@@ -67,11 +67,12 @@ if [[ -v ${WRITER[${FMT}]} ]]; then
     exit 1
 fi
 
-RES="$(pwd)"                              # pandoc's --resource-path
-RES="${RES}:$(dirname $(pwd)/${SRC})"     # add src-file's directory
-RES="${RES}:${TOP}"                       # add repo's top-dir
-RES="${RES}:${LIB}"                       # add repo's lib-dir
-RES="${RES}:${LIB}/${FMT}"                # add repo's framework-directory
+# RES is pandoc's --resource-path
+RES="$(pwd)"                              # current directory
+RES="${RES}:$(dirname $(pwd)/${SRC})"     # : src file directory
+RES="${RES}:${TOP}"                       # : prezto repo top dir
+RES="${RES}:${LIB}"                       # : prezto repo lib dir
+RES="${RES}:${LIB}/${FMT}"                # : prezto repo lib/framework dir
 
 DST="$(pwd)/${OUT}/$(dirname ${SRC})"             # target directory
 DST="${DST}/$(basename ${SRC/.md/-${FMT}.html})"  # add dst filename

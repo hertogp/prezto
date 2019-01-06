@@ -16,12 +16,19 @@ const autoprefix = require('gulp-autoprefixer');
  * Run gulp watch from root dir and off you go
  * */
 
+// Optimize images -> lib
 
 function img() {
   // optimize images
   return src(['src/pix/*.jpeg', 'src/pix/*.png'])
     .pipe(imagemin())
     .pipe(dest('lib/prezto/pix'));
+}
+
+// Copy pandoc src tpl's -> lib
+function tpl() {
+  return src(['src/pandoc/*.tpl'])
+    .pipe(dest('lib/pandoc'));
 }
 
 function css() {
@@ -68,7 +75,8 @@ function generic(cb) {
 // });
 
 exports.help = generic
-exports.default = parallel(img, css, minjs)
+exports.default = parallel(img, tpl, css, minjs)
 exports.css = css
 exports.img = img
+exports.tpl = tpl
 exports.minjs = minjs

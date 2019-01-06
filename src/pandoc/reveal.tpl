@@ -261,7 +261,8 @@ $endif$
         // Optional reveal.js plugins
         dependencies: [
           { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-          { src: 'lib/reveal/plugin/zoom-js/zoom.js', async: true },
+          //{ src: 'lib/reveal/plugin/zoom-js/zoom.js', async: true },
+          { src: 'lib/reveal/plugin/zoom-js/zoom.js', async: false },
 $if(notes-server)$
           { src: 'lib/reveal/socket.io/socket.io.js', async: true },
           { src: 'lib/reveal/plugin/notes-server/client.js', async: true },
