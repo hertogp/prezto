@@ -27,33 +27,39 @@ $if(quotes)$
 $endif$
   </style>
 $if(highlighting-css)$
+  <!-- highlighting css -->
   <style type="text/css">
 $highlighting-css$
   </style>
 $endif$
 $if(theme)$
+  <!-- $theme$.css theme (via yaml's theme variable) -->
   <link rel="stylesheet" href="lib/reveal/css/theme/$theme$.css" id="theme">
 $else$
+  <!-- black.css theme (default) -->
   <link rel="stylesheet" href="lib/reveal/css/theme/black.css" id="theme">
 $endif$
 $for(css)$
+  <!-- $css$ (via yaml's css single/list of css additions) -->
   <link rel="stylesheet" href="$css$"/>
 $endfor$
-  <!-- Printing and PDF exports -->
-  <script>
-    var link = document.createElement( 'link' );
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
-    link.href = window.location.search.match( /print-pdf/gi ) ? 'lib/reveal/css/print/pdf.css' : 'lib/reveal/css/print/paper.css';
-    document.getElementsByTagName( 'head' )[0].appendChild( link );
-  </script>
-  <!--[if lt IE 9]>
-  <script src="$revealjs-url$/lib/js/html5shiv.js"></script>
-  <![endif]-->
+  <!-- Printing and PDF exports:
+  In order to be self-contained, the <script> to dynamically load pdf.css or
+  paper.css based on url matching /print-pdf/gi (or not) has been removed.
+  To create a pdf version:
+  - add css variable to yaml e.g. css: css/print/paper.css
+  - convert markdown to html, open the html file & print it from the browser
+
+  Note:
+  - there's something funky going on wrt the theme used
+  - at the moment all slides turn out blank ...(white theme)
+  -->
 $if(math)$
+  <!-- yaml's math -->
   $math$
 $endif$
 $for(header-includes)$
+  <!-- a header-include -->
   $header-includes$
 $endfor$
 </head>
@@ -262,7 +268,7 @@ $endif$
         dependencies: [
           { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
           //{ src: 'lib/reveal/plugin/zoom-js/zoom.js', async: true },
-          { src: 'lib/reveal/plugin/zoom-js/zoom.js', async: false },
+          // { src: 'lib/reveal/plugin/zoom-js/zoom.js', async: false },
 $if(notes-server)$
           { src: 'lib/reveal/socket.io/socket.io.js', async: true },
           { src: 'lib/reveal/plugin/notes-server/client.js', async: true },
@@ -270,10 +276,28 @@ $endif$
 $if(mathjax)$
           { src: 'lib/reveal/plugin/math/math.js', async: true },
 $endif$
-          { src: 'lib/reveal/plugin/notes/notes.js', async: true }
+          // { src: 'lib/reveal/plugin/notes/notes.js'}
         ]
       });
     </script>
+    <script>
+    // check Reveal is there
+    console.log(Reveal);
+    </script>
+  <!--
+    Preload plugins: trying to be self-contained
+  -->
+  <script src="lib/reveal/plugin/zoom-js/zoom.js"></script>
+  <script src="lib/reveal/plugin/notes/notes.js"></script>
+  <script>
+     Reveal.addKeyBinding({keyCode: 83,
+                           key: 'S',
+                           description: 'Speaker notes view'
+                          }, function() {
+                            RevealNotes.open('notes.html');
+                          });
+  </script>
+
   $for(include-after)$
   $include-after$
   $endfor$

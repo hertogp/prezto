@@ -1,0 +1,133 @@
+.reveal span.tiny { font-size: 0.3em; }
+.reveal span.small { font-size: 0.8em; }
+.reveal span.big { font-size: 1.6em; }
+.reveal span.huge { font-size: 2em; }
+
+/* Required to make slide positioning possible
+.reveal .slides section {
+    width: 100%;
+    height: 100%;
+    background-color: #bbb;
+}
+*/
+
+/* Slide positioning
+ */
+.reveal div.top,
+.reveal span.top {
+    position: fixed;
+    top: 0;
+    text-align: center;
+}
+
+
+.east { position: fixed; right: 0px; top: 49%; transform: translateY(-50%); text-align: right;
+    width: 50% !important;
+}
+
+/* colors */
+.bgblue { background: blue; }
+.bgred { background: red; }
+.bggreen { background: green; }
+.bgyellow { background: yellow; }
+
+.reveal div.left.pane,
+.reveal span.left.pane,
+.reveal div.right.pane,
+.reveal span.right.pane {
+    width: 50%;
+    height: 100%;
+    background: yellow;
+    color: red;
+}
+.reveal div.topleft.pane,
+.reveal span.topleft.pane,
+.reveal div.topright.pane,
+.reveal span.topright.pane,
+.reveal div.botleft.pane,
+.reveal span.botleft.pane,
+.reveal div.botright.pane,
+.reveal span.botright.pane {
+    width: 50%;
+    height: 50%
+}
+.reveal div.left,
+.reveal span.left {
+    position: fixed;
+    left: 0;
+    top: 49%;
+    transform: translateY(-50%);
+    text-align: left;
+}
+.reveal div.right,
+.reveal span.right {
+    position: fixed;
+    right: 0;
+    top: 49%;
+    transform: translateY(-50%);
+    text-align: right;
+}
+.reveal div.bottom,
+.reveal span.bottom {
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+}
+
+
+.reveal div.topleft,
+.reveal span.topleft {
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: left;
+    margin: 0;
+}
+
+.reveal div.topright,
+.reveal span.topright {
+    position: fixed;
+    top: 0;
+    right: 0;
+    text-align: right;
+    margin: 0;
+}
+
+.reveal div.botleft,
+.reveal span.botleft {
+    position: fixed;
+    text-align: left;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+}
+
+.reveal div.botright,
+.reveal span.botright {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    text-align: right;
+    margin: 0;
+}
+.reveal div.middle,
+.reveal span.middle {
+    position: fixed;
+    top: 49%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.midpoint { position: fixed; top: 49%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.north { position: fixed; top: 25px; left: 50%; transform: translateX(-50%); text-align: center; }
+.south { position: fixed; bottom: 35px; left: 50%; transform: translateX(-50%); text-align: center; }
+.east { position: fixed; right: 0px; top: 49%; transform: translateY(-50%); text-align: right;
+    width: 50% !important;
+}
+.west { position: fixed; left: 1%; top: 49%; transform: translateY(-50%); text-align: left; }
+.north-east { position: fixed; top: 25px; right: 11%; text-align: right; }
+.north-west { position: fixed; top: 25px; left: 11%; text-align: left; }
+.south-east { position: fixed; bottom: 35px; right: 11%; text-align: right; }
+.south-west { position: fixed; bottom: 35px; left: 11%; text-align: left; }
+

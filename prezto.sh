@@ -39,7 +39,7 @@ EXT="${EXT}+escaped_line_breaks"  # for linebreaks in table cells
 EXT="${EXT}+lists_without_preceding_blankline"  # doesn't work?
 
 OPT=""                            # pandoc options for conversion
-OPT="${OPT} --self-contained"     # so offline viewing is possible
+OPT="${OPT} --self-contained"     # offline viewing
 OPT="${OPT} --section-divs"       # needed for impress
 
 # MAIN

@@ -13,6 +13,7 @@ pids
 
 # -- ignore directories
 lib/prezto
+lib/pandoc
 dist/
 tmp/
 
