@@ -1,12 +1,14 @@
 ---
 title: Reveal'ing Markdown
 author: hertogp
-transition: none
-controls: ""
-css: prezto/css/prezto.css
+transition: convex
+controls:
+css:
+  - prezto/css/prezto-reveal.css
+  - fa/css/all.min.css
 ...
 
-# HTML
+# HTML {transition=none}
 
 ## HTML Structure
 
@@ -36,6 +38,39 @@ div .pause-overlay
 
 [where .ppf is past, present or future]{.south .tiny}
 
+
+## {.flex}
+
+::: {.pane4 .bg-green}
+[Emoji's]{.fg-yellow}
+:::
+
+::: {.pane4 .bg-neprhitis .smaller}
+Font-Awesome
+:::
+
+::: {.pane4 .bg-pumpkin .fg-emerald}
+[:+1:]{.iconic}
+[:smile:]{.iconic}
+:::
+
+
+::: {.pane4 .fg-neprhitis .bg-asphalt .smaller .smaller}
+<i class="fa fa-dizzy iconic"></i>
+<i class="fa fa-thumbs-up iconic"></i>
+:::
+
+::: {.pane4 .fg-neprhitis .bg-asphalt .smaller .smaller}
+![](fa/svg/fa-dizzy.svg){data-fa-transform="shrink-6"}
+![](fa/svg/fa-dizzy.svg){style="width:25px; height:25px"}
+:::
+
+::: {.pane4 .fg-neprhitis .bg-asphalt .smaller .smaller}
+![](fa/svg/fa-thumbs-up.svg){.icon-22 .fg-red}
+![](fa/svg/fa-thumbs-up.svg){.icon-32}
+![](fa/svg/fa-thumbs-up.svg){.icon-64}
+:::
+
 ##
 
 [Corners]{.middle .huge}
@@ -48,6 +83,27 @@ div .pause-overlay
 
 [botright]{.botright}
 
+##
+
+::: {.middle .huge}
+DIV Corners
+:::
+
+::: {.topleft}
+topleft
+:::
+
+::: {.topright}
+topright
+:::
+
+::: {.botleft}
+botleft
+:::
+
+::: {.botright}
+botright
+:::
 
 ##
 
@@ -63,15 +119,91 @@ div .pause-overlay
 
 ## Panes
 
-[left pane]{.left .pane style="background:blue;"}
+[left span]{.left .pane style="background:blue;"}
 
-[right pane]{.right .pane style="background:darkgrey;"}
+[right span]{.right .pane style="background:darkgrey;"}
+
+## Div Panes
+
+::: {.left .pane .bg-blue}
+left div
+:::
+
+::: {.right .pane .bg-asphalt}
+right div
+:::
+
+## {.flex }
+
+::: {.bg-midnight}
+Another example of \
+[two panes]{.fg-pumpkin .big}
+:::
+
+::: {.bg-pumpkin}
+
+    ## {.flex }
+
+    :::
+    Another example of
+    [two panes]{.fg-pumpkin .big}
+    :::
+
+    :::
+    ... infinite recursion ahead
+    :::
+:::
+
 
 ##
-[topleft panel]{.topleft .pane .bgblue}
-[topright panel]{.topright .pane .bgred}
-[botleft panel]{.botleft .pane .bggreen}
-[botright panel]{.botright .pane .bgyellow}
+
+[topleft panel]{.topleft .pane .fg-emerald .bg-midnight}
+
+. . .
+
+[topright panel]{.topright .pane .fg-clouds .bg-orange2}
+
+. . .
+
+::: {.botleft .pane .fg-white .bg-pomegranate}
+- sync
+- ack
+- snack
+- prack
+:::
+
+. . .
+
+[ ![](./img/tls-handshake.svg){style="top=0"} ]{.botright .pane .fg-midnight .bg-sunflower}
+
+## {.flex}
+
+::: {.pane4 .bg-emerald}
+TLS handshake
+:::
+
+::: {.pane4 .bg-neprhitis .smaller}
+Explained finally! [:+1:]{.fg-red style="font-style: bold"}
+:::
+
+::: {.pane4 .bg-pumpkin}
+![](./img/tls-handshake.svg)
+:::
+
+
+::: {.pane4 .bg-asphalt .smaller .smaller}
+
+<i class="fa fa-user iconic"></i>
+
+- after TCP handshake (56 ms)
+- client says hello
+- server sends its cert
+- client checks
+- client sends its choices
+- both calc symmetric key
+:::
+
+
 
 ## {data-background-image="prezto/pix/stormtroopers.jpg"}
 
@@ -102,8 +234,8 @@ div .pause-overlay
 # Markdown
 
 ## MD Structure
-{transition=convex}
-```markdown
+
+```pandoc
 # H1-Title1 (starts stack-section)
 
 ## topic 1.1 (slide-section)
@@ -117,6 +249,7 @@ div .pause-overlay
 
 ## topic 2.1 (slide-section)
 etc..
+
 ```
 
 # Conversion
@@ -129,13 +262,19 @@ pandoc -s -t <writer> --template=reveal.tpl> \
        path/input.md -o dist/path/input.html
 ```
 
-- self-contained problematic when using plugins
+\-- [self-contained [problematic when using plugins]{.fg-red}]{.small}
 
 ## Pandoc Template
 
 - includes plugins:
     - zoom.js
-    - notes.js
+    - notes.js (hit S)
+
+::: notes
+
+- Requires serving notes.html from server ?
+
+:::
 
 ## Reveal.js
 

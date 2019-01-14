@@ -37,6 +37,7 @@ EXT="${EXT}+fenced_divs"          # ::: <class>\n..\n::: => <div class="x">
 EXT="${EXT}+pipe_tables"          # easy tables
 EXT="${EXT}+escaped_line_breaks"  # for linebreaks in table cells
 EXT="${EXT}+lists_without_preceding_blankline"  # doesn't work?
+EXT="${EXT}+emoji"
 
 OPT=""                            # pandoc options for conversion
 OPT="${OPT} --self-contained"     # offline viewing
@@ -89,9 +90,9 @@ echo "Generating $DST"
 # - Pandoc doesn't use the --resource-path to locate a writer-template
 #   file.  Use the --template option to provide a specific path/to/template.
 
-CMD="pandoc -s"
+CMD="pandoc --verbose -s"
+CMD="${CMD} -f markdown"${EXT}
 CMD="${CMD} -t ${WRITER[${FMT}]}"            # map framework to writer
-CMD="${CMD}${EXT}"                           # add some extenstions
 CMD="${CMD} --template=${TPL}/${FMT}.tpl"    # specific path to template
 CMD="${CMD} --resource-path=${RES}"          # for finding img, css, js etc..
 CMD="${CMD} ${OPT}"                          # add some options

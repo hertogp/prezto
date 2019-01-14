@@ -1,0 +1,259 @@
+// prezto-reveal.scss
+// - reveal.css customizations
+
+// In Pandoc's markdown you can attach attributes to:
+//
+// 1) div's -> :::{} content :::
+// 2) span's -> [ content ]{}
+// 3) code -> `code`{}
+//    or
+//    ```{}
+//    ````
+// 4) section -> (#)# {}
+//
+// Note:
+// - for div's, {} can be bare classname
+// - otherwise: {#id .class1 .. .classx k1=v1 .. ky=vy }
+// - 4) -> properties are set on section slide
+
+:root {
+    box-sizing: border-box;
+}
+
+@import "vars";
+@import "colors";
+
+// html { font-size: 42px;}
+
+// FONT SIZES
+// Reveal sets:
+// -  html, body   font-size: 100% (defaults to 16px)
+// - .reveal       font-size: 42px;
+// - .reveal <elm> font-size: 100%;
+// - .reveal <elm> font: inherit;
+// so:
+// - use % (relative to parent font) to scale.
+// - in markdown .fxnnn is set on section, div or span
+// - nesting <elm>'s won't cascade the scaling
+
+.reveal {
+    section {
+        div, span, code, pre, i {
+        &.fx5    { font-size:   5%; }
+        &.fx10   { font-size:  10%; }
+        &.fx20   { font-size:  20%; }
+        &.fx30   { font-size:  30%  }
+        &.fx40   { font-size:  40%; }
+        &.fx50   { font-size:  50%; }
+        &.fx60   { font-size:  60%; }
+        &.fx70   { font-size:  70%; }
+        &.fx80   { font-size:  80%; }
+        &.fx90   { font-size:  90%; }
+        &.fx100   { font-size: 100%; }
+        &.fx110   { font-size: 110%; }
+        &.fx120   { font-size: 120%; }
+        &.fx130   { font-size: 130%; }
+        &.fx140   { font-size: 140%; }
+        &.fx150   { font-size: 150%; }
+        &.fx160   { font-size: 160%; }
+        &.fx170   { font-size: 160%; }
+        &.fx180   { font-size: 160%; }
+        &.fx190   { font-size: 160%; }
+        &.fx200   { font-size: 200%; }
+        &.fx250   { font-size: 200%; }
+        &.fx300   { font-size: 300%; }
+
+        // pandoc has no underline/overline
+        // - better not use this on sections
+        // - see colors for td-<color> -> text-decoration-color;
+        // lines
+        &.td-under { text-decoration-line: underline; }
+        &.td-over { text-decoration-line: overline; }
+        &.td-both { text-decoration-line: underline overline; }
+        // styles
+        &.td-dot { text-decoration-style: dotted; }
+        &.td-dash { text-decoration-style: dashed; }
+        &.td-double { text-decoration-style: double; }
+        &.td-wavy { text-decoration-style: wavy; }
+        // shorthands
+        &.td-us-red { text-decoration: underline solid $red; }
+        &.td-uw-red { text-decoration: underline wavy $red; }
+        &.td-us-green { text-decoration: underline solid $green; }
+        &.td-uw-green { text-decoration: underline wavy $green; }
+        &.td-us-yellow { text-decoration: underline solid $yellow; }
+        &.td-uw-yellow { text-decoration: underline wavy $yellow; }
+    }
+  }
+}
+
+
+// HR
+// can I set background color and have its transparency fade, showing bg color
+// of the slide?
+hr {
+    border: 0;
+    height: 1px;
+    color: white;
+}
+hr.fade {
+    background: linear-gradient(to right,
+    transparent, currentcolor 15%, currentcolor 85%, transparent,);
+}
+
+// BLOCK QUOTATIONS
+
+// - LINE BLOCKS
+// pandoc generates a div with class 'line-block'
+.line-block {
+    text-align: left;  // original intent!
+}
+
+// - Blockquotes
+.reveal blockquote {
+
+  display: block;
+  position: relative;
+  width: 70%;
+
+  margin: 1em auto;
+  padding: 0.2em;
+
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 0.4em 1.2em 0 1.2em;
+  border-radius: 0 1.5em 0 1.5em;
+  box-sizing: border-box;
+
+  &:before {
+    content: '\201c';
+    font-size: 4em;
+    margin: 0 auto;
+    top: -0.15em;
+    position: absolute;
+  }
+
+  & p:first-child {
+    display: inline-block;
+    margin-left: 1em;
+  }
+
+  & p:last-child {
+    display: inline-block;
+    text-align: right;
+    width: 100%;
+  }
+}
+
+// - Code blocks
+// - Encoded as
+//   div.sourceCode
+//     pre.sourceCode <lang>
+//       code.sourceCode
+//         a.sourceLine  (n x)
+
+.reveal pre.sourceCode {
+    background-color: $silver;
+    border-radius: 0.2em;
+    box-shadow: none;
+}
+
+.reveal pre.sourceCode.shadow {
+    box-shadow: 5px 5px 8px 0px currentcolor;
+}
+
+// IMAGES
+.reveal section p > img {
+    border: none;
+    box-shadow: none;
+    background: none;
+    max-height: 90%;
+    max-width: 90%;
+    vertical-align: middle;
+}
+
+// - image sizes
+.reveal {
+    section {
+        p > img {
+            // by default img's are resized to 95% to always fit a slide.
+            // - you might need to get really small
+            &.size1  { max-width:  1%; max-height: 1%;  }
+            &.size5  { max-width:  5%; max-height: 5%;  }
+            &.size10 { max-width: 10%; max-height: 10%; }
+            &.size20 { max-width: 20%; max-height: 20%; }
+            &.size30 { max-width: 30%; max-height: 30%; }
+            &.size40 { max-width: 40%; max-height: 40%; }
+            &.size50 { max-width: 50%; max-height: 50%; }
+            &.size60 { max-width: 60%; max-height: 60%; }
+            &.size70 { max-width: 70%; max-height: 70%; }
+            &.size80 { max-width: 80%; max-height: 80%; }
+            &.size90 { max-width: 90%; max-height: 90%; }
+}}}
+
+// POSITIONING
+
+section.slide, section.slide div {
+    &.flex50 {
+        // need !important since reveal sets display as an element.style
+        display: flex !important;
+        flex-flow: row wrap !important;
+    }
+    &.flex50 h1, &.flex50 h2 {
+        display: none;
+    }
+    &.flex50 > * {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+// obsolete below, see .flex50 above
+section.slide.flex {
+    display: flex !important;
+    flex-flow: row wrap !important;
+}
+section.slide.flex > h1,
+section.slide.flex > h2 {
+    display: none;
+}
+section.slide.flex > * {           // all direct children of slide.flex
+    width: 49% !important;         // h1,h2 and divs
+}
+section.slide.flex img {           // clean images on flex slide
+    margin: 0 !important;               // - all space is for image
+    padding: 0 !important;              //   ,,
+    border: 0 !important;               // - ,, (is ugly too)
+    // background: transparent !important; // - no backgrounds (ugly)
+    box-shadow: 0 0 !important;         // - no shadows (distracts)
+}
+
+.reveal .slides > section, .reveal .slides > section > section {
+    height: 100%;
+    padding: 0;
+}
+
+section.slide, section.slide div {
+
+    &.grid50 {
+        top: 0px !important;
+        height: 100% !important;
+        min-height: 100% !important;
+        display: grid !important;
+        grid-template-rows: auto 1fr auto;
+        grid-template-columns: 100%;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    &.grid50 h1, &.grid50 h2 {
+        display: none !important;
+    }
+    &.grid50 p, &.grid50 div {
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+    }
+    &.grid50 > * {
+        max-height: 100%;
+    }
+}
