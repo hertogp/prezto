@@ -16,9 +16,13 @@
 // - otherwise: {#id .class1 .. .classx k1=v1 .. ky=vy }
 // - 4) -> properties are set on section slide
 
-:root {
+* {
     box-sizing: border-box;
 }
+
+// SIMPLE REVEAL OVERRIDES
+.reveal pre { box-shadow: none; }
+
 
 @import "vars";
 @import "colors";
@@ -163,71 +167,127 @@ hr.fade {
 }
 
 // IMAGES
+// .reveal section p > img {
+//     border: none;
+//     box-shadow: none;
+//     background: none;
+//     max-height: 90%;
+//     max-width: 90%;
+//     vertical-align: middle;
+// }
 .reveal section p > img {
     border: none;
     box-shadow: none;
     background: none;
-    max-height: 90%;
-    max-width: 90%;
+    // width: 99%;
+    // max-height: 99%;
+    // max-width: 90%;
     vertical-align: middle;
+    // by default img's are resized to 95% to always fit a slide.
+    // - you might need to get really small
+    &.size1  { max-width:  1%; max-height: 1%;  }
+    &.size5  { max-width:  5%; max-height: 5%;  }
+    &.size10 { max-width: 10%; max-height: 10%; }
+    &.size20 { max-width: 20%; max-height: 20%; }
+    &.size30 { max-width: 30%; max-height: 30%; }
+    &.size40 { max-width: 40%; max-height: 40%; }
+    &.size50 { max-width: 50%; max-height: 50%; }
+    &.size60 { max-width: 60%; max-height: 60%; }
+    &.size70 { max-width: 70%; max-height: 70%; }
+    &.size80 { max-width: 80%; max-height: 80%; }
+    &.size90 { max-width: 90%; max-height: 90%; width: 90%; }
+    &.size100 { max-width: 100%; max-height: 100%; }
 }
 
-// - image sizes
-.reveal {
-    section {
-        p > img {
-            // by default img's are resized to 95% to always fit a slide.
-            // - you might need to get really small
-            &.size1  { max-width:  1%; max-height: 1%;  }
-            &.size5  { max-width:  5%; max-height: 5%;  }
-            &.size10 { max-width: 10%; max-height: 10%; }
-            &.size20 { max-width: 20%; max-height: 20%; }
-            &.size30 { max-width: 30%; max-height: 30%; }
-            &.size40 { max-width: 40%; max-height: 40%; }
-            &.size50 { max-width: 50%; max-height: 50%; }
-            &.size60 { max-width: 60%; max-height: 60%; }
-            &.size70 { max-width: 70%; max-height: 70%; }
-            &.size80 { max-width: 80%; max-height: 80%; }
-            &.size90 { max-width: 90%; max-height: 90%; }
-}}}
-
 // POSITIONING
+// - 2 PANE layout (multiple rows possible)
 
 section.slide, section.slide div {
+
+&.fr { display: flex !important; justify-content: center !important; }
+&.fr > h1,
+&.fr > h2 { display: none; }
+&.fr > * {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+// &.fr > *[class~="center"] { justify-content: center; align-items: center; }
+
+&.fr > *[class~="top"] { justify-content: flex-start; }
+&.fr > *[class~="bot"] { justify-content: flex-end; }
+&.fr > *[class~="left"] { align-items: flex-start; }
+&.fr > *[class~="right"] { align-items: flex-end; }
+
+
+&.fr > *[class~="top"][class~="center"] { align-items: center; }
+&.fr > *[class~="bot"][class~="center"] { align-items: center; }
+&.fr > *[class~="left"][class~="center"] { justify-content: center; }
+&.fr > *[class~="right"][class~="center"] { justify-content: center; }
+}
+
+section.slide, section.slide div {
+    // -1- Slide-container level
     &.flex50 {
         // need !important since reveal sets display as an element.style
         display: flex !important;
         flex-flow: row wrap !important;
     }
-    &.flex50 h1, &.flex50 h2 {
+    &.flex50 > h1, &.flex50 > h2 {
         display: none;
     }
     &.flex50 > * {
-        flex: 0 0 50%;
-        max-width: 50%;
+        //flex: 0 0 50%;    // row flex-item is always 50%
+        max-width: 50%;   // 2 items on 1 row
+        min-width: 50%;
+        border: blue;
+    }
+
+    // -2- .fv on row-items themselves aligns their content (default=centered)
+    &.flex50 > *[class~="fv"] {
+        display: flex !important;
+        flex-flow: column wrap !important;
+        justify-content: center;
+        align-items: center;
+        border: green;
+    }
+    // vertical items may take up all space
+    &.flex50 > *.fv > * {
+        border: red;
+        // flex: 0 0 90%;  // destroys vertical alignment
+        width: 90%;
+        max-width: 90%;
+
+        // lists area way off to the left ... user agent style sheet?
+        // margin-inline-start: 0px;
+        // padding: 0 0 0 1em;
+        // See https://css-tricks.com/snippets/css/clear-fix/
+    }
+
+    &.flex50 > *.fv.top {
+          justify-content: flex-start;
+          padding-top: 0.2em;
+    }
+    &.flex50 > *.fv.right {
+          align-items: flex-end;
+          padding-right: 0.2em;
+    }
+    &.flex50 > *.fv.bot {
+          justify-content: flex-end;
+          padding-bottom: 0.2em;
+    }
+    &.flex50 > *.fv.left {
+            align-items: flex-start;
+            padding-left: 0.2em;
     }
 }
 
-// obsolete below, see .flex50 above
-section.slide.flex {
-    display: flex !important;
-    flex-flow: row wrap !important;
-}
-section.slide.flex > h1,
-section.slide.flex > h2 {
-    display: none;
-}
-section.slide.flex > * {           // all direct children of slide.flex
-    width: 49% !important;         // h1,h2 and divs
-}
-section.slide.flex img {           // clean images on flex slide
-    margin: 0 !important;               // - all space is for image
-    padding: 0 !important;              //   ,,
-    border: 0 !important;               // - ,, (is ugly too)
-    // background: transparent !important; // - no backgrounds (ugly)
-    box-shadow: 0 0 !important;         // - no shadows (distracts)
-}
 
+// required for flex/grid layouts on slides (especially height!)
 .reveal .slides > section, .reveal .slides > section > section {
     height: 100%;
     padding: 0;

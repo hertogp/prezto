@@ -323,32 +323,137 @@ but the SVG fg-color is fixed
 
 
 
-
 # Slide Layouts
 
-## {.flex50}
+## Centered By default {.fx70}
 
-::: {.bg-midnight}
-An example of \
-[two panes]{.fg-pumpkin .big}
-:::
+- lists
 
-::: {.bg-pumpkin}
-```{.sourceCode .fx40 .fg-white .bg-pumpkin}
-## {.flex50}
-
-:::
-An example of
-[two panes]{.fg-pumpkin .big}
-:::
-
-:::
-... infinite recursion ahead
-:::
+```python
+# codeblocks
 ```
+
+> Quote-blocks
+>
+
+| Line-blocks not so much
+
+
+## Header not shown {.fr}
+
+2 panes
+
+````
+ 2 panes
+
+ ```
+ markdown of right column
+ ```
+````
+
+
+## {.fr}
+
+::: {.fg-pumpkin .bg-asphalt}
+2 panes
 :::
 
-## {.flex}
+````{.fg-midnight .bg-pumpkin}
+ ::: {.fg-pumpkin .bg-asphalt}
+ 2 panes
+ :::
+
+ ```{.fg-midnight .bg-pumpkin}
+ markdown of right column
+ ```
+````
+
+
+## {.fr}
+
+::: {.top .left .fg-pumpkin .bg-asphalt}
+2 panes
+:::
+
+````{.fg-midnight .bg-pumpkin}
+::: {.top .left .fg-pumpkin .bg-asphalt}
+2 panes
+:::
+
+```{.fg-midnight .bg-pumpkin}
+markdown of right column
+```
+````
+
+## {.fr}
+
+::: {.bot .right .fg-pumpkin .bg-asphalt}
+2 panes
+:::
+
+````{.fg-midnight .bg-pumpkin}
+::: {.bot .right .fg-pumpkin .bg-asphalt}
+2 panes
+:::
+
+```{.fg-midnight .bg-pumpkin}
+markdown of right column
+```
+````
+
+## {.fr}
+
+::: {.fx130 .top .center .fg-pumpkin .bg-asphalt}
+2 panes
+:::
+
+
+```` {.sourceCode .fx40 .fg-midnight .bg-pumpkin}
+## {.fr .bg-midnight}
+
+::: {.fx130 .top .left .fg-pumpkin .bg-asphalt}
+2 panes
+:::
+
+
+```{.sourceCode .fx40 .bg-pumpkin}
+markdown of right column
+```
+
+````
+
+
+
+## TLS Handshake {.fr}
+
+:::: {.fr}
+
+::: {.bg-emerald}
+TLS handshake
+:::
+
+::: {.bg-pumpkin}
+![](./img/tls-handshake.svg){height="300px"}
+:::
+
+::::
+
+:::: {.fr}
+
+::: {.bg-neprhitis}
+Explaination
+:::
+
+::: {.bg-asphalt .fx60 .fv}
+- list item 1
+- list item 2
+:::
+
+::::
+
+## TLS Handshake
+
+:::: {.fr}
 
 ::: {.bg-emerald}
 TLS handshake
@@ -358,43 +463,21 @@ TLS handshake
 Explaination
 :::
 
-::: {.bg-pumpkin}
-![](./img/tls-handshake.svg){style="width:100%"}
-:::
+::::
 
-::: {.bg-asphalt .fx60}
-<br>
-- after TCP handshake (56 ms)
-- client says hello
-- server sends its cert
-- client checks
-- client sends its choices
-- both calc symmetric key
-:::
-
-## {.flex50}
-
-::: {.bg-emerald}
-TLS handshake
-:::
-
-::: {.bg-neprhitis}
-Explaination
-:::
+:::: {.fr}
 
 ::: {.bg-pumpkin}
-![](./img/tls-handshake.svg){style="width:100%"}
+![](./img/tls-handshake.svg){height="300px"}
 :::
 
-::: {.bg-asphalt .fx60}
-<br>
-- after TCP handshake (56 ms)
-- client says hello
-- server sends its cert
-- client checks
-- client sends its choices
-- both calc symmetric key
+::: {.bg-asphalt .fx60 .fv}
+- list item 1
+- list item 2
 :::
+
+::::
+
 
 ## {.flex50}
 
